@@ -18,7 +18,7 @@ rightXScreen = 3
 main :: IO ()
 main = do
     middleBar <- spawnDzen2Bar middleXScreen "-dock -ta l -h 20"
-    xmonad $ (myConfig middleBar) `additionalKeysP` myKeybindings
+    xmonad $ (myConfig middleBar) `removeKeysP` removeKeybindings `additionalKeysP` myKeybindings
 
 myConfig middleBar = ewmh desktopConfig
                { terminal = "terminator"
