@@ -6,8 +6,10 @@ import XMonad.Util.Run
 import XMonad.Hooks.DynamicLog
 import System.IO
 
-myLogHook :: Handle -> X ()
-myLogHook h = dynamicLogWithPP $ def
+import XMonad.Hooks.FadeInactive
+
+titleBar :: Handle -> X ()
+titleBar h = dynamicLogWithPP $ def
     {
         ppCurrent           =   dzenColor "#ebac54" "#111111" . pad
       , ppVisible           =   dzenColor "white" "#111111" . pad
@@ -21,3 +23,8 @@ myLogHook h = dynamicLogWithPP $ def
       , ppTitle             =   (" " ++) . dzenColor "white" "#111111" . dzenEscape
       , ppOutput            =   hPutStrLn h
     }
+
+myLogHook :: Handle -> X ()
+myLogHook h = do titleBar h
+--                 fadeInactiveLogHook fadeAmount
+--                   where fadeAmount = 0.8

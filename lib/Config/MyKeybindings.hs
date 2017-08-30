@@ -17,7 +17,9 @@ seekAmount = 5
 
 removeKeybindings = [ "M-shift-q" ]
 myKeybindings = [ "M-x i j" >>> safeSpawn "intellij-idea-ultimate-edition" []
+                , "M-x i c" >>> safeSpawn "clion" []
                 , "M-x w" >>> safeSpawn "google-chrome-stable" []
+                , "M-x e" >>> safeSpawn "emacs" []
                 , SpecialKeys.xf86AudioPlay  >>> mpc "toggle"
                 , SpecialKeys.xf86AudioNext  >>> mpc "next"
                 , SpecialKeys.xf86AudioPrev  >>> mpc "prev"
