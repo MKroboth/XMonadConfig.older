@@ -4,4 +4,4 @@ conky.config = {
     out_to_x = false,
     update_interval = 1
 }
-conky.text = [[${mpd_status} ${mpd_smart} $time]]
+conky.text = [[$time]]
