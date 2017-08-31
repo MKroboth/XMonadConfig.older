@@ -4,7 +4,7 @@ import System.Exit
 import XMonad
 
 import XMonad.Util.Run
-import qualified DZenBar
+import DZenBar
 
 import Config.XScreens
 
@@ -13,48 +13,48 @@ import System.Directory(getHomeDirectory)
 conkyConfig home x = home ++ "/.xmonad/config/conky/" ++ x
 
 
-menuBars :: FilePath -> [DZenBar.DZenBar]
+menuBars :: FilePath -> [DZenBar]
 menuBars h = let
     config = conkyConfig $ h
-    leftBar = DZenBar.DZenBar
-      { DZenBar.conkyConfigFile = config "leftConky.lua"
-      , DZenBar.xscreen = leftXScreen
-      , DZenBar.position = (500, 0)
-      , DZenBar.width = 1420
-      , DZenBar.height = 18
-      , DZenBar.align = DZenBar.DRight
+    leftBar = DZenBar
+      { conkyConfigFile = config "leftConky.lua"
+      , xscreen = leftXScreen
+      , position = (500, 0)
+      , width = 1420
+      , height = 18
+      , align = DRight
       }
-    uptimeBar = DZenBar.DZenBar
-      { DZenBar.conkyConfigFile = config "uptimeBar.lua"
-      , DZenBar.xscreen = leftXScreen
-      , DZenBar.position = (0, 0)
-      , DZenBar.width = 200
-      , DZenBar.height = 18
-      , DZenBar.align = DZenBar.DLeft
+    uptimeBar = DZenBar
+      { conkyConfigFile = config "uptimeBar.lua"
+      , xscreen = leftXScreen
+      , position = (0, 0)
+      , width = 200
+      , height = 18
+      , align = DLeft
       }
-    ramBar = DZenBar.DZenBar
-      { DZenBar.conkyConfigFile = config "ramBar.lua"
-      , DZenBar.xscreen = leftXScreen
-      , DZenBar.position = (200, 0)
-      , DZenBar.width = 300
-      , DZenBar.height = 18
-      , DZenBar.align = DZenBar.DLeft
+    ramBar = DZenBar
+      { conkyConfigFile = config "ramBar.lua"
+      , xscreen = leftXScreen
+      , position = (200, 0)
+      , width = 300
+      , height = 18
+      , align = DLeft
       }
-    rightBar = DZenBar.DZenBar
-      { DZenBar.conkyConfigFile = config "rightConky.lua"
-      , DZenBar.xscreen = rightXScreen
-      , DZenBar.position = (0, 0)
-      , DZenBar.width = 1630
-      , DZenBar.height = 18
-      , DZenBar.align = DZenBar.DLeft
+    rightBar = DZenBar
+      { conkyConfigFile = config "rightConky.lua"
+      , xscreen = rightXScreen
+      , position = (0, 0)
+      , width = 1630
+      , height = 18
+      , align = DLeft
       }
-    timeBar = DZenBar.DZenBar
-      { DZenBar.conkyConfigFile = config "timeBar.lua"
-      , DZenBar.xscreen = rightXScreen
-      , DZenBar.position = (1630, 0)
-      , DZenBar.width = 200
-      , DZenBar.height = 18
-      , DZenBar.align = DZenBar.DRight
+    timeBar = DZenBar
+      { conkyConfigFile = config "timeBar.lua"
+      , xscreen = rightXScreen
+      , position = (1630, 0)
+      , width = 200
+      , height = 18
+      , align = DRight
       }
     in [leftBar, rightBar, uptimeBar, ramBar, timeBar]
 
