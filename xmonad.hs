@@ -23,7 +23,7 @@ main = do
     xmonad $ (myConfig middleBar) `removeKeysP` removeKeybindings `additionalKeysP` myKeybindings
 
 myConfig middleBar = ewmh desktopConfig
-               { terminal = "termite"
+               { terminal = "xterm"
                , modMask = mod4Mask
                , logHook = myLogHook middleBar
                , layoutHook = myLayoutHook
