@@ -10,11 +10,7 @@ import Hooks.MyLayoutHook
 import Hooks.MyStartupHook
 import Hooks.MyManageHook
 import Config.MyKeybindings
-
-
-leftXScreen = 2
-middleXScreen = 1
-rightXScreen = 3
+import Config.XScreens
 
 
 main :: IO ()

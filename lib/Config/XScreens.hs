@@ -1,5 +1,5 @@
 module Config.XScreens where
 
-leftXScreen = 2
-rightXScreen = 3
+leftXScreen = 3
+rightXScreen = 2
 middleXScreen = 1
