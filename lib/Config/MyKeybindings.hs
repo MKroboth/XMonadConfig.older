@@ -21,7 +21,7 @@ launchApplication = flip safeSpawn $ []
 
 k x = "M-x " ++ x
 
-xscreenOrder = [2, 1, 0] -- was [0..] *** change to match your screen order ***
+xscreenOrder = [0, 2, 1] -- was [0..] *** change to match your screen order ***
 
 workspaceKeys = [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action))
                 | (key, scr)  <- zip "wer" xscreenOrder
@@ -30,7 +30,7 @@ workspaceKeys = [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust 
 
 applicationKeybindings = [ k"i j" >>> launchApplication "intellij-idea-ultimate-edition"
                          , k"i c" >>> launchApplication "clion"
-                         , k"w"   >>> launchApplication "firefox"
+                         , k"w"   >>> launchApplication "google-chrome-stable"
                          , k"e"   >>> launchApplication "emacs"
                          ]
 
