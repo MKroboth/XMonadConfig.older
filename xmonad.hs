@@ -15,8 +15,9 @@ import Config.XScreens
 
 main :: IO ()
 main = do
+    screens <- detectXScreens
     middleBar <- spawnDzen2Bar middleXScreen "-dock -ta l -h 20"
-    xmonad $ (myConfig middleBar) `removeKeysP` removeKeybindings `additionalKeysP` myKeybindings
+    xmonad $ (myConfig middleBar) `removeKeysP` removeKeybindings `additionalKeysP` (myKeybindings screens)
 
 myConfig middleBar = ewmh desktopConfig
                { terminal = "xterm"

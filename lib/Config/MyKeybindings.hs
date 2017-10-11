@@ -9,7 +9,7 @@ import SpecialKeys
 
 (>>>) a b = (a,b)
 
-myKeybindings :: [(String, X ())]
+myKeybindings :: [ScreenId] -> [(String, X ())]
 
 mpc x = safeSpawn "mpc" [x]
 mpc' x i = safeSpawn "mpc" [x, i]
@@ -21,14 +21,12 @@ launchApplication = flip safeSpawn $ []
 
 k x = "M-x " ++ x
 
-xscreenOrder = [0, 2, 1] -- was [0..] *** change to match your screen order ***
-
-workspaceKeys = [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action))
-                | (key, scr)  <- zip "wer" xscreenOrder
+workspaceKeys xscreens = [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action))
+                | (key, scr)  <- zip "wer" xscreens
                 , (action, mask) <- [ (W.view, "") , (W.shift, "S-")]
                 ]
 
-applicationKeybindings = [ k"i j" >>> launchApplication "intellij-idea-ultimate-edition"
+applicationKeybindings = [ k"i j" >>> launchApplication "idea.sh"
                          , k"i c" >>> launchApplication "clion"
                          , k"w"   >>> launchApplication "google-chrome-stable"
                          , k"e"   >>> launchApplication "emacs"
@@ -41,5 +39,5 @@ musicControlKeybindings = [ xf86AudioPlay        >>> mpc  "toggle"
                           , xf86AudioRaiseVolume >>> mpc' "seek" ("+" ++ show seekAmount)
                           ]
 
-removeKeybindings = [ "M-shift-q" ]
-myKeybindings = musicControlKeybindings ++ applicationKeybindings ++ workspaceKeys
+removeKeybindings = [ "M-Shift-q" ]
+myKeybindings scrs = musicControlKeybindings ++ applicationKeybindings ++ (workspaceKeys scrs)
