@@ -24,6 +24,6 @@ instance Show DZenBar where
   show x = "conky -c '" ++
    (conkyConfigFile x) ++
    "' | dzen2 -dock -e 'mouse2=' -xs " ++
-    (show $ xscreen x) ++
+    (let (S xs) = xscreen x in show (xs + 1)) ++
     " -x " ++ (show $ fst $ position x) ++ " -y " ++ (show $ snd $ position x) ++ " -w " ++ (show $ width x) ++ " -h " ++
     (show $ height x) ++ " -ta " ++ (show $ align x)

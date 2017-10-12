@@ -8,9 +8,8 @@ import System.IO
 
 import XMonad.Hooks.FadeInactive
 
-titleBar :: X Handle -> X ()
-titleBar xh = do
- h <- xh
+titleBar :: Handle -> X ()
+titleBar h =
  dynamicLogWithPP $ def
     {
         ppCurrent           =   dzenColor "#ebac54" "#111111" . pad
@@ -26,7 +25,7 @@ titleBar xh = do
       , ppOutput            =   hPutStrLn h
     }
 
-myLogHook :: X Handle -> X ()
+myLogHook :: Handle -> X ()
 myLogHook h = do titleBar h
 --                 fadeInactiveLogHook fadeAmount
 --                   where fadeAmount = 0.8

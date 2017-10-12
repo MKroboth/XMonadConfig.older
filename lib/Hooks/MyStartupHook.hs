@@ -63,5 +63,6 @@ myStartupHook :: X ()
 myStartupHook  = do
     screens <- xscreens
     home <- liftIO getHomeDirectory
-    sequence $ map (\x -> spawn $ show x) (menuBars home screens)
+
+    sequence $ map (spawn . show) (menuBars home $ screens)
     spawn $ "stalonetray -c " ++ home ++ "/.xmonad/config/stalonetrayrc"

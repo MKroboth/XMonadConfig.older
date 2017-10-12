@@ -17,11 +17,9 @@ middle :: [a] -> [a]
 middle l@(_:_:_:_) = middle $ tail $ init l
 middle l           = l
 
-middleBar = do x <- xscreens
-               spawnDzen2Bar (head $ middle x) "-dock -ta l -h 20"
-
 main = do
-    xmonad $ (myConfig middleBar) `removeKeysP` removeKeybindings `additionalKeysP` (myKeybindings)
+ bar <- spawnDzen2Bar (3) "-dock -ta l -h 20"
+ xmonad $ (myConfig bar) `removeKeysP` removeKeybindings `additionalKeysP` (myKeybindings)
 
 myConfig middleBar = ewmh desktopConfig
                { terminal = "konsole"
