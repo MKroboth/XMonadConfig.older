@@ -2,11 +2,13 @@ module DZenBar where
 
 --     spawn "conky -c /home/mkr/.xmonad/config/leftConky.lua | dzen2 -e 'mouse2=' -xs 2 -h 18 -dock -ta r"
 
+import XMonad
+
 data DZenBarAlign = DLeft | DRight | DCenter
 
 data DZenBar = DZenBar
   { conkyConfigFile :: String
-  , xscreen :: Integer
+  , xscreen :: ScreenId
   , position :: (Integer, Integer)
   , width :: Integer
   , height :: Integer

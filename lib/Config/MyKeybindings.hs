@@ -1,15 +1,16 @@
 module Config.MyKeybindings(myKeybindings, removeKeybindings) where
 import XMonad
 import XMonad.Util.Run
-import Config.XScreens
 import qualified XMonad.StackSet as W
+
+import XMonad.Actions.PhysicalScreens
 
 
 import SpecialKeys
 
 (>>>) a b = (a,b)
 
-myKeybindings :: [ScreenId] -> [(String, X ())]
+myKeybindings :: [(String, X ())]
 
 mpc x = safeSpawn "mpc" [x]
 mpc' x i = safeSpawn "mpc" [x, i]
@@ -21,9 +22,10 @@ launchApplication = flip safeSpawn $ []
 
 k x = "M-x " ++ x
 
-workspaceKeys xscreens = [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action))
-                | (key, scr)  <- zip "wer" xscreens
-                , (action, mask) <- [ (W.view, "") , (W.shift, "S-")]
+
+workspaceKeys = [ (mask ++ "M-" ++ [key], action scr)
+                | (key, scr)  <- zip "wer" [0..]
+                , (action, mask) <- [ (viewScreen, "") , (sendToScreen, "S-")]
                 ]
 
 applicationKeybindings = [ k"i j" >>> launchApplication "idea.sh"
@@ -40,4 +42,4 @@ musicControlKeybindings = [ xf86AudioPlay        >>> mpc  "toggle"
                           ]
 
 removeKeybindings = [ "M-Shift-q" ]
-myKeybindings scrs = musicControlKeybindings ++ applicationKeybindings ++ (workspaceKeys scrs)
+myKeybindings = musicControlKeybindings ++ applicationKeybindings ++ workspaceKeys

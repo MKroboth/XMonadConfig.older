@@ -10,17 +10,24 @@ import Hooks.MyLayoutHook
 import Hooks.MyStartupHook
 import Hooks.MyManageHook
 import Config.MyKeybindings
-import Config.XScreens
+import XMonad.Actions.PhysicalScreens
 
+import Data.Maybe
 
-main :: IO ()
+middle :: [a] -> [a]
+middle l@(_:_:_:_) = middle $ tail $ init l
+middle l           = l
+
+xscreens :: X ScreenId
+xscreens = generator >>= return . head . middle . catMaybes
+   where generator = (sequence $ map getScreen [0..20])
+
 main = do
-    screens <- detectXScreens
-    middleBar <- spawnDzen2Bar middleXScreen "-dock -ta l -h 20"
-    xmonad $ (myConfig middleBar) `removeKeysP` removeKeybindings `additionalKeysP` (myKeybindings screens)
+    let middleBar = xscreens >>= \x -> spawnDzen2Bar x "-dock -ta l -h 20"
+    xmonad $ (myConfig middleBar) `removeKeysP` removeKeybindings `additionalKeysP` (myKeybindings)
 
 myConfig middleBar = ewmh desktopConfig
-               { terminal = "xterm"
+               { terminal = "konsole"
                , modMask = mod4Mask
                , logHook = myLogHook middleBar
                , layoutHook = myLayoutHook
