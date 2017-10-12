@@ -43,5 +43,10 @@ import qualified Data.Map as M
 
 --}}}
 
-spawnDzen2Bar xs flags = spawnPipe $ "dzen2 -e 'mouse2=' -xs " ++ (show xs) ++ " " ++ flags
+spawnDzen2Bar :: ScreenId -> String -> X Handle
+spawnDzen2Bar xs flags = do
+ spawn $ "xmessage \"" ++ ("dzen2 -e 'mouse2=' -xs " ++ (show xs) ++ " " ++ flags) ++ "\""
+ spawnPipe $ "dzen2 -e 'mouse2=' -xs " ++ (show xs) ++ " " ++ flags
+
+
 spawnDzen2BarWithConky xs conf flags = spawn $ "conky -c '" ++ conf ++ "' | dzen2 -e 'mouse2=' -xs " ++ (show xs) ++ " " ++ flags

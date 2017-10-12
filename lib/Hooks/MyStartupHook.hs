@@ -6,16 +6,11 @@ import XMonad
 import XMonad.Util.Run
 import DZenBar
 
-import Data.Maybe
+import Config.XScreens
 
 import System.Directory(getHomeDirectory)
-import XMonad.Actions.PhysicalScreens
 
 conkyConfig home x = home ++ "/.xmonad/config/conky/" ++ x
-
-xscreens :: X [ScreenId]
-xscreens = generator >>= return . catMaybes
-  where generator = (sequence $ map getScreen [0..10])
 
 menuBars :: FilePath -> [ScreenId] -> [DZenBar]
 menuBars h screens = let
