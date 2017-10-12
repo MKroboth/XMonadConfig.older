@@ -44,7 +44,7 @@ import qualified Data.Map as M
 --}}}
 
 spawnDzen2Bar :: ScreenId -> String -> X Handle
-spawnDzen2Bar xs flags = do
+spawnDzen2Bar (S xs) flags = do
  spawn $ "xmessage \"" ++ ("dzen2 -e 'mouse2=' -xs " ++ (show xs) ++ " " ++ flags) ++ "\""
  spawnPipe $ "dzen2 -e 'mouse2=' -xs " ++ (show xs) ++ " " ++ flags
 
