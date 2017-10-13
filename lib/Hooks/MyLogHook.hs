@@ -1,4 +1,4 @@
-module Hooks.MyLogHook(myLogHook) where
+module Hooks.MyLogHook(myLogHook, mainBarPipeName) where
 
 import XMonad
 import XMonad.Util.Run
@@ -8,6 +8,8 @@ import System.IO
 import XMonad.Util.SpawnNamedPipe
 
 import XMonad.Hooks.FadeInactive
+
+mainBarPipeName = "mainTopBarPipe"
 
 titleBar :: Handle -> X ()
 titleBar h =
@@ -34,5 +36,5 @@ fadeInactive = fadeInactiveLogHook fadeAmount
   where fadeAmount = 0.8
 
 myLogHook :: X ()
-myLogHook = do getNamedPipe "topBar" >>= showTitleBar
+myLogHook = do getNamedPipe mainBarPipeName >>= showTitleBar
              --fadeInactive

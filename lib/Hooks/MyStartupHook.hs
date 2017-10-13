@@ -1,23 +1,29 @@
 module Hooks.MyStartupHook(myStartupHook) where
-import System.IO
-import System.Exit
-import XMonad
-
-import XMonad.Util.Run
-import DZenBar
-import XMonad.Util.SpawnNamedPipe
-
-import Config.XScreens
 
 import System.Directory(getHomeDirectory)
+import System.FilePath
+import XMonad
+import XMonad.Util.SpawnNamedPipe(spawnNamedPipe)
+import XMonad.Util.Run
 
-conkyConfig home x = home ++ "/.xmonad/config/conky/" ++ x
+import Hooks.MyLogHook(mainBarPipeName)
+
+import DZenBar
+import Config.XScreens
+
+configDir :: FilePath -> FilePath -> FilePath
+configDir home config = home </> baseDir </> config
+  where baseDir = ".xmonad" </> "config"
+
+conkyConfig :: FilePath -> FilePath -> FilePath
+conkyConfig home = ((configDir home conkyDir) </>)
+  where conkyDir = "conky"
 
 menuBars :: FilePath -> [ScreenId] -> [DZenBar]
-menuBars h screens = let
+menuBars home screens = let
     leftScreen =  (head screens)
     rightScreen = (last screens)
-    config x = Just (conkyConfig h x)
+    config x = Just (conkyConfig home x)
     leftBar = newDZenBar
       { conkyConfigFile = config "leftConky.lua"
       , xscreen         = leftScreen
@@ -60,20 +66,25 @@ menuBars h screens = let
       }
     in [leftBar, rightBar, uptimeBar, ramBar, timeBar]
 
+topBar :: ScreenId -> DZenBar
 topBar screen = newDZenBar
       { xscreen = screen
       , height  = Just 18
       , align   = Just DLeft
       }
 
-myStartupHook :: X ()
-myStartupHook  = do
-    screens <- xscreens
-    home <- liftIO getHomeDirectory
-    spawnNamedPipe (show $ topBar (head . middle $ screens)) "topBar"
-
-    sequence $ map (spawn . show) (menuBars home $ screens)
-    spawn $ "stalonetray -c " ++ home ++ "/.xmonad/config/stalonetrayrc"
+spawnAllBars :: [ScreenId] -> FilePath -> X ()
+spawnAllBars screens home =
+    do spawnNamedPipe (show $ topBar (head . middle $ screens)) mainBarPipeName
+       sequence $ map (spawn . show) (menuBars home $ screens)
+       return ()
   where middle :: [a] -> [a]
         middle l@(_:_:_:_) = middle $ tail $ init l
         middle l           = l
+
+myStartupHook :: X ()
+myStartupHook =
+ do screens <- xscreens
+    home <- liftIO getHomeDirectory
+    spawnAllBars screens home
+    safeSpawn "stalonetray" [ "-c", (configDir home "stalonetrayrc")]
