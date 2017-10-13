@@ -21,6 +21,6 @@ myConfig = ewmh desktopConfig
                , layoutHook = myLayoutHook
                , handleEventHook = docksEventHook <+> handleEventHook def <+> fullscreenEventHook
                , manageHook = myManageHook
-               , startupHook = myStartupHook
+               , startupHook = checkKeymap myConfig myKeybindings >> myStartupHook
                }
 

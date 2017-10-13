@@ -4,7 +4,7 @@ import XMonad.Util.Run
 import qualified XMonad.StackSet as W
 
 import XMonad.Actions.PhysicalScreens
-
+import System.Exit(exitSuccess)
 
 import SpecialKeys
 
@@ -41,5 +41,7 @@ musicControlKeybindings = [ xf86AudioPlay        >>> mpc  "toggle"
                           , xf86AudioRaiseVolume >>> mpc' "seek" ("+" ++ show seekAmount)
                           ]
 
-removeKeybindings = [ "M-Shift-q" ]
-myKeybindings = musicControlKeybindings ++ applicationKeybindings ++ workspaceKeys
+xmonadKeybindings = [ "M-S-<Escape>" >>> liftIO exitSuccess]
+
+removeKeybindings = [ "M-S-q" ]
+myKeybindings = musicControlKeybindings ++ applicationKeybindings ++ workspaceKeys ++ xmonadKeybindings
