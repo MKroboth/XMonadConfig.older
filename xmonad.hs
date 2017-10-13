@@ -4,7 +4,6 @@ import XMonad.Util.EZConfig
 import XMonad.Hooks.ManageDocks(docksEventHook,manageDocks)
 import XMonad.Hooks.EwmhDesktops
 
-import TopBars
 import Hooks.MyLogHook
 import Hooks.MyLayoutHook
 import Hooks.MyStartupHook
@@ -13,18 +12,12 @@ import Config.MyKeybindings
 import Config.XScreens
 
 
-middle :: [a] -> [a]
-middle l@(_:_:_:_) = middle $ tail $ init l
-middle l           = l
+main = xmonad $ myConfig `removeKeysP` removeKeybindings `additionalKeysP` (myKeybindings)
 
-main = do bar <- spawnDzen2Bar middleScreen "-dock -ta l -h 20"
-          xmonad $ (myConfig bar) `removeKeysP` removeKeybindings `additionalKeysP` (myKeybindings)
-  where middleScreen = 3
-
-myConfig middleBar = ewmh desktopConfig
+myConfig = ewmh desktopConfig
                { terminal = "konsole"
                , modMask = mod4Mask
-               , logHook = myLogHook middleBar
+               , logHook = myLogHook
                , layoutHook = myLayoutHook
                , handleEventHook = docksEventHook <+> handleEventHook def <+> fullscreenEventHook
                , manageHook = myManageHook

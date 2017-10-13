@@ -5,10 +5,15 @@ import XMonad
 
 import XMonad.Util.Run
 import DZenBar
+import XMonad.Util.SpawnNamedPipe
 
 import Config.XScreens
 
 import System.Directory(getHomeDirectory)
+
+middle :: [a] -> [a]
+middle l@(_:_:_:_) = middle $ tail $ init l
+middle l           = l
 
 conkyConfig home x = home ++ "/.xmonad/config/conky/" ++ x
 
@@ -16,8 +21,8 @@ menuBars :: FilePath -> [ScreenId] -> [DZenBar]
 menuBars h screens = let
     leftScreen =  (head screens)
     rightScreen = (last screens)
-    config = conkyConfig $ h
-    leftBar = DZenBar
+    config x = Just (conkyConfig h x)
+    leftBar = newDZenBar
       { conkyConfigFile = config "leftConky.lua"
       , xscreen = leftScreen
       , position = (500, 0)
@@ -25,7 +30,7 @@ menuBars h screens = let
       , height = 18
       , align = DRight
       }
-    uptimeBar = DZenBar
+    uptimeBar = newDZenBar
       { conkyConfigFile = config "uptimeBar.lua"
       , xscreen = leftScreen
       , position = (0, 0)
@@ -33,7 +38,7 @@ menuBars h screens = let
       , height = 18
       , align = DLeft
       }
-    ramBar = DZenBar
+    ramBar = newDZenBar
       { conkyConfigFile = config "ramBar.lua"
       , xscreen = leftScreen
       , position = (200, 0)
@@ -41,7 +46,7 @@ menuBars h screens = let
       , height = 18
       , align = DLeft
       }
-    rightBar = DZenBar
+    rightBar = newDZenBar
       { conkyConfigFile = config "rightConky.lua"
       , xscreen = rightScreen
       , position = (0, 0)
@@ -49,7 +54,7 @@ menuBars h screens = let
       , height = 18
       , align = DLeft
       }
-    timeBar = DZenBar
+    timeBar = newDZenBar
       { conkyConfigFile = config "timeBar.lua"
       , xscreen = rightScreen
       , position = (1630, 0)
@@ -59,10 +64,19 @@ menuBars h screens = let
       }
     in [leftBar, rightBar, uptimeBar, ramBar, timeBar]
 
+topBar screen = newDZenBar
+               { xscreen = screen
+               , position = (0, 0)
+               , width = 1920
+               , height = 18
+               , align = DLeft
+               }
+
 myStartupHook :: X ()
 myStartupHook  = do
     screens <- xscreens
     home <- liftIO getHomeDirectory
+    spawnNamedPipe (show $ topBar (head . middle $ screens)) "topBar"
 
     sequence $ map (spawn . show) (menuBars home $ screens)
     spawn $ "stalonetray -c " ++ home ++ "/.xmonad/config/stalonetrayrc"

@@ -7,4 +7,5 @@ import XMonad
 myManageHook = composeAll
     [ manageHook def
     , (isFullscreen --> doFullFloat)
-    , manageDocks ]
+    , manageDocks
+    ]

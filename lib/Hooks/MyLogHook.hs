@@ -5,6 +5,7 @@ import XMonad.Util.Run
 
 import XMonad.Hooks.DynamicLog
 import System.IO
+import XMonad.Util.SpawnNamedPipe
 
 import XMonad.Hooks.FadeInactive
 
@@ -25,7 +26,13 @@ titleBar h =
       , ppOutput            =   hPutStrLn h
     }
 
-myLogHook :: Handle -> X ()
-myLogHook h = do titleBar h
---                 fadeInactiveLogHook fadeAmount
---                   where fadeAmount = 0.8
+showTitleBar :: Maybe Handle -> X ()
+showTitleBar (Just h) = titleBar h
+showTitleBar Nothing = return ()
+
+fadeInactive = fadeInactiveLogHook fadeAmount
+  where fadeAmount = 0.8
+
+myLogHook :: X ()
+myLogHook = do getNamedPipe "topBar" >>= showTitleBar
+             --fadeInactive

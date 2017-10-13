@@ -4,15 +4,26 @@ module DZenBar where
 
 import XMonad
 
+x `piped` y = x ++ " | " ++ y
+
 data DZenBarAlign = DLeft | DRight | DCenter
 
 data DZenBar = DZenBar
-  { conkyConfigFile :: String
+  { conkyConfigFile :: Maybe String
   , xscreen :: ScreenId
   , position :: (Integer, Integer)
   , width :: Integer
   , height :: Integer
   , align :: DZenBarAlign
+  }
+
+newDZenBar = DZenBar
+  { conkyConfigFile = Nothing
+  , xscreen = undefined
+  , position = undefined
+  , width = undefined
+  , height = undefined
+  , align = undefined
   }
 
 instance Show DZenBarAlign where
@@ -21,9 +32,10 @@ instance Show DZenBarAlign where
   show DCenter = "c"
 
 instance Show DZenBar where
-  show x = "conky -c '" ++
-   (conkyConfigFile x) ++
-   "' | dzen2 -dock -e 'mouse2=' -xs " ++
-    (let (S xs) = xscreen x in show (xs + 1)) ++
-    " -x " ++ (show $ fst $ position x) ++ " -y " ++ (show $ snd $ position x) ++ " -w " ++ (show $ width x) ++ " -h " ++
-    (show $ height x) ++ " -ta " ++ (show $ align x)
+  show x = case conkyConfigFile x of
+    Just f ->  ("conky -c '" ++ f ++ "'")  `piped` dzen2Command
+    Nothing -> dzen2Command
+    where dzen2Command = "dzen2 -dock -e 'mouse2=' -xs " ++
+                             (let (S xs) = xscreen x in show (xs + 1)) ++
+                             " -x " ++ (show $ fst $ position x) ++ " -y " ++ (show $ snd $ position x) ++ " -w " ++ (show $ width x) ++ " -h " ++
+                             (show $ height x) ++ " -ta " ++ (show $ align x)
