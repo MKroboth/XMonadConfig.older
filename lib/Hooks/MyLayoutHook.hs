@@ -13,4 +13,5 @@ import XMonad.Layout.Spiral
 
 
 myLayoutHook = smartBorders . avoidStruts $ layouts
-  where layouts = tabbed shrinkText (theme smallClean) ||| spiral(16/9) ||| layoutHook def
+  where tabbedLayout =  tabbed shrinkText (theme smallClean)
+        layouts =  spiral(16/9) ||| tabbedLayout ||| layoutHook def
