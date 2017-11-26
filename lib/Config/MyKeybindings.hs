@@ -12,7 +12,7 @@ import SpecialKeys
 
 myKeybindings :: [(String, X ())]
 
-mpc x = safeSpawn "mpc" [x]
+mpc  x   = safeSpawn "mpc" [x]
 mpc' x i = safeSpawn "mpc" [x, i]
 
 seekAmount = 5
@@ -23,23 +23,28 @@ launchApplication = flip safeSpawn $ []
 k x = "M-x " ++ x
 
 
-workspaceKeys = [ (mask ++ "M-" ++ [key], action scr)
-                | (key, scr)  <- zip "wer" [0..]
-                , (action, mask) <- [ (viewScreen, "") , (sendToScreen, "S-")]
-                ]
+workspaceKeys =
+  [ (mask ++ "M-" ++ [key], action scr)
+  | (key, scr)  <- zip "wer" [0..]
+  , (action, mask) <- [ (viewScreen, "")
+                      , (sendToScreen, "S-")
+                      ]
+  ]
 
-applicationKeybindings = [ k"i j" >>> launchApplication "idea.sh"
-                         , k"i c" >>> launchApplication "clion"
-                         , k"w"   >>> launchApplication "google-chrome-stable"
-                         , k"e"   >>> launchApplication "emacs"
-                         ]
+applicationKeybindings =
+  [ k"i j" >>> launchApplication "idea.sh"
+  , k"i c" >>> launchApplication "clion"
+  , k"w"   >>> launchApplication "google-chrome-stable"
+  , k"e"   >>> launchApplication "emacs"
+  ]
 
-musicControlKeybindings = [ xf86AudioPlay        >>> mpc  "toggle"
-                          , xf86AudioNext        >>> mpc  "next"
-                          , xf86AudioPrev        >>> mpc  "prev"
-                          , xf86AudioLowerVolume >>> mpc' "seek" ("-" ++ show seekAmount)
-                          , xf86AudioRaiseVolume >>> mpc' "seek" ("+" ++ show seekAmount)
-                          ]
+musicControlKeybindings =
+  [ xf86AudioPlay        >>> mpc  "toggle"
+  , xf86AudioNext        >>> mpc  "next"
+  , xf86AudioPrev        >>> mpc  "prev"
+  , xf86AudioLowerVolume >>> mpc' "seek" ("-" ++ show seekAmount)
+  , xf86AudioRaiseVolume >>> mpc' "seek" ("+" ++ show seekAmount)
+  ]
 
 xmonadKeybindings = [ "M-S-<Escape>" >>> liftIO exitSuccess]
 

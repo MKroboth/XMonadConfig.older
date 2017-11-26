@@ -22,8 +22,7 @@ titleBar h =
       , ppUrgent            =   dzenColor "#ff0000" "#111111" . pad
       , ppWsSep             =   ""
       , ppSep               =   " | "
-      , ppLayout            =   dzenColor "#ebac54" "#111111" .
-                                \x -> x
+      , ppLayout            =   dzenColor "#ebac54" "#111111" . id
       , ppTitle             =   (" " ++) . dzenColor "white" "#111111" . dzenEscape
       , ppOutput            =   hPutStrLn h
     }

@@ -64,7 +64,7 @@ menuBars home screens = let
       , height          = Just 18
       , align           = Just DRight
       }
-    in [leftBar, rightBar, uptimeBar, ramBar, timeBar]
+  in [leftBar, rightBar, uptimeBar, ramBar, timeBar]
 
 topBar :: ScreenId -> DZenBar
 topBar screen = newDZenBar
@@ -73,14 +73,17 @@ topBar screen = newDZenBar
       , align   = Just DLeft
       }
 
+middle :: [a] -> [a]
+middle l@(_:_:_:_) = middle $ tail $ init l
+middle l           = l
+
 spawnAllBars :: [ScreenId] -> FilePath -> X ()
 spawnAllBars screens home =
-    do spawnNamedPipe (show $ topBar (head . middle $ screens)) mainBarPipeName
-       sequence $ map (spawn . show) (menuBars home $ screens)
+    do spawnNamedPipe middleScreen mainBarPipeName
+       sequence $ map (spawn . show) (menuBars home $ sideScreens)
        return ()
-  where middle :: [a] -> [a]
-        middle l@(_:_:_:_) = middle $ tail $ init l
-        middle l           = l
+  where middleScreen = show $ topBar $ head screens -- (show $ topBar (head . middle $ screens))
+        sideScreens = tail screens
 
 myStartupHook :: X ()
 myStartupHook =
